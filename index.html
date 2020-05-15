@@ -67,12 +67,12 @@
   <!-- /.modal-dialog -->
 </div>
     <script>
-        const url = "https://docs.google.com/forms/d/e/1FAIpQLScSYRRXVfppcrjShD_woD8DRXx6jUnsjA3NsyhlP17gGjjpLw/viewform?embedded=true&entry.374043167="
+        const url = "https://docs.google.com/forms/d/e/1FAIpQLSdEVa08UTV7maT5vYMMJsNzFe9N2AICHOUzL4zOX9l0aCGT0w/viewform?usp=pp_url&entry.1964618817="
         $(document).ready(function() {
             $("#celu").focusout(function(){
               var celsucio = $("#celu").val();
               console.log(celsucio)
-              var cellimpio = celsucio.replace('+','').replace(/ /g,"").replace('-','')
+              var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
               console.log(cellimpio)
               $("#celu").val(cellimpio)
             })
@@ -93,7 +93,7 @@
               var desc = parseInt($("#descremadas").val());
               var ent = parseInt($("#enteras").val());
               var total = (desc + ent)*40
-              var pedido = "\nEnteras: "+ ent + "\nDescremadas: " + desc + "\nTotal $" + total
+              var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*"
               var mje = $("#mensaje").val() + pedido
               window.open("http://wa.me/" + celu + "?text=" + encodeURI(mje))
               $("#celu").val('');
