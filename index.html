@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pedidos Socio Lácteo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  </head>
+</head>
+<body>
+    <div class="container mt-3">
+    <form>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="distrito">Distrito</label>
+            <select id="distrito" class="form-control">
+              <option id="D1">D1</option>
+              <option id="D2">D2</option>
+              <option id="D3">D3</option>
+              <option id="D4">D4</option>
+              <option id="D5">D5</option>
+              <option id="D6">D6</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="celu">Celu</label>
+            <input type="tel" class="form-control" id="celu" autocomplete="off">
+          </div>
+        </div>  
+        <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="enteras">Cantidad Entera</label>
+          <input type="number" class="form-control" id="enteras" autocomplete="off">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="descremadas">Cantidad Descremada</label>
+            <input type="number" class="form-control" id="descremadas" autocomplete="off">
+        </div>
+        <div class="form-group col-md-12">
+          <label for="mensaje">Mensaje</label>
+          <textarea class="form-control" id="mensaje" rows="3"></textarea>
+        </div>
+      </form>
+      </div>
+        <button class="btn btn-primary btn-block" id="pedido" data-toggle="modal" data-target="#myModal">Registrar Pedido</button>
+      </div>
+</body>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Guardar Pedido</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+          <iframe src="" width="100%" height="500" frameborder="0" allowtransparency="true"></iframe>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success btn-block" id="conf" data-dismiss="modal">Enviar Confirmación</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+    <script>
+        const url = "https://docs.google.com/forms/d/e/1FAIpQLScSYRRXVfppcrjShD_woD8DRXx6jUnsjA3NsyhlP17gGjjpLw/viewform?embedded=true&entry.374043167="
+        $(document).ready(function() {
+            $("#celu").focusout(function(){
+              var celsucio = $("#celu").val();
+              console.log(celsucio)
+              var cellimpio = celsucio.replace('+','').replace(/ /g,"").replace('-','')
+              console.log(cellimpio)
+              $("#celu").val(cellimpio)
+            })
+            $("#pedido").click(function() {
+                var datos = [];
+                datos.push($("#distrito").val());
+                datos.push($("#celu").val());
+                datos.push($("#enteras").val());
+                datos.push($("#descremadas").val());
+
+                var cadena = datos.join("|");
+                console.log(cadena)
+                $('iframe').attr('src',url + cadena)
+            })
+
+            $("#conf").click(function() {
+              var celu = $("#celu").val();
+              var desc = parseInt($("#descremadas").val());
+              var ent = parseInt($("#enteras").val());
+              var total = (desc + ent)*40
+              var pedido = "\nEnteras: "+ ent + "\nDescremadas: " + desc + "\nTotal $" + total
+              var mje = $("#mensaje").val() + pedido
+              window.open("http://wa.me/" + celu + "?text=" + encodeURI(mje))
+              $("#celu").val('');
+              $("#enteras").val('');
+              $("#descremadas").val('');
+
+              $('#myModal').on('hidden.bs.modal', function (e) {
+                $("#celu").focus()
+              })
+              console.log(mje)
+              console.log(celu)
+            })
+        })
+    </script>
+</html>
