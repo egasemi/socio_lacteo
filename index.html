@@ -59,7 +59,8 @@
           <iframe src="" width="100%" height="500" frameborder="0" allowtransparency="true"></iframe>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-success btn-block" id="conf" data-dismiss="modal">Enviar Confirmación</button>
+        <button class="btn btn-warning" id="bnro_pedido">Obtener Nro de Pedido</button>
+        <button class="btn btn-success" id="conf" data-dismiss="modal" style="display:none;">Enviar Confirmación</button>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -67,7 +68,7 @@
   <!-- /.modal-dialog -->
 </div>
     <script>
-        const url = "https://docs.google.com/forms/d/e/1FAIpQLSdEVa08UTV7maT5vYMMJsNzFe9N2AICHOUzL4zOX9l0aCGT0w/viewform?usp=pp_url&entry.1964618817="
+        const url = "https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQTOSCRDGWraUUDrk52POJVIaom4J4Yg/viewform?usp=pp_url&entry.1436956763="
         $(document).ready(function() {
             $("#celu").focusout(function(){
               var celsucio = $("#celu").val();
@@ -88,23 +89,38 @@
                 $('iframe').attr('src',url + cadena)
             })
 
+            $("#bnro_pedido").click(function(){
+              var requestURL = "https://spreadsheets.google.com/feeds/list/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json";
+              var request = new XMLHttpRequest();
+              request.open('GET', requestURL);
+              request.responseType = 'json';
+              request.send();
+
+              request.onload = function() {
+                var lista = request.response.feed.entry;
+                nro_pedido = lista[lista.length - 1].gsx$nrodepedido.$t;
+              }
+              $("#conf").show();
+              $("#bnro_pedido").hide();
+              //console.log(nro_pedido)
+            })
             $("#conf").click(function() {
               var celu = $("#celu").val();
               var desc = parseInt($("#descremadas").val());
               var ent = parseInt($("#enteras").val());
-              var total = (desc + ent)*40
-              var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*"
-              var mje = $("#mensaje").val() + pedido
-              window.open("http://wa.me/" + celu + "?text=" + encodeURI(mje))
+              var total = (desc + ent)*40;
+              var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*\nNro Pedido: *" + nro_pedido + "*";
+              var mje = $("#mensaje").val() + pedido;
+              window.open("http://wa.me/" + celu + "?text=" + encodeURI(mje));
               $("#celu").val('');
               $("#enteras").val('');
               $("#descremadas").val('');
 
               $('#myModal').on('hidden.bs.modal', function (e) {
-                $("#celu").focus()
+                $("#celu").focus();
+                $("#conf").hide();
+                $("#bnro_pedido").show();
               })
-              console.log(mje)
-              console.log(celu)
             })
         })
     </script>
