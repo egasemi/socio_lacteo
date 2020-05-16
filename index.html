@@ -45,18 +45,18 @@
         </div>
       </form>
       </div>
-        <button class="btn btn-primary btn-block" id="pedido" data-toggle="modal" data-target="#myModal">Registrar Pedido</button>
+        <button class="btn btn-primary btn-block" id="pedido" data-toggle="modal" data-target="#myModal" style="display: none;">Registrar Pedido</button>
       </div>
 </body>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Guardar Pedido</h4>
+          <h4 class="modal-title" id="myModalLabel">Registrar Pedido</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
       <div class="modal-body">
-          <iframe src="" width="100%" height="500" frameborder="0" allowtransparency="true"></iframe>
+          <iframe src="" width="100%" height="500" frameborder="0" allowtransparency="true" id="iframe"></iframe>
       </div>
       <div class="modal-footer">
         <button class="btn btn-warning" id="bnro_pedido">Obtener Nro de Pedido</button>
@@ -70,24 +70,36 @@
     <script>
         const url = "https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQTOSCRDGWraUUDrk52POJVIaom4J4Yg/viewform?usp=pp_url&entry.1436956763="
         $(document).ready(function() {
+            $("#celu,#enteras,#descremadas").change(function() {
+              datos = [];
+              console.log(datos)
+              datos.push($("#distrito").val());
+              datos.push($("#celu").val());
+              datos.push($("#enteras").val());
+              datos.push($("#descremadas").val());
+              if (datos.length > 3) {
+                cadena = datos.join("|")
+                $("#pedido").show();
+              } else {
+                $("#pedido").hide();
+              }
+            })
             $("#celu").focusout(function(){
               var celsucio = $("#celu").val();
-              console.log(celsucio)
-              var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
-              console.log(cellimpio)
-              $("#celu").val(cellimpio)
-            })
+              if (celsucio[0] === "+") {
+                var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
+                console.log(cellimpio)
+                $("#celu").val(cellimpio)
+              } else {
+                var cellimpio = 549 + celsucio
+                $("#celu").val(cellimpio)
+            }})
+            
             $("#pedido").click(function() {
-                var datos = [];
-                datos.push($("#distrito").val());
-                datos.push($("#celu").val());
-                datos.push($("#enteras").val());
-                datos.push($("#descremadas").val());
-
-                var cadena = datos.join("|");
-                console.log(cadena)
-                $('iframe').attr('src',url + cadena)
+              $('iframe').attr('src',url + cadena);
             })
+
+
 
             $("#bnro_pedido").click(function(){
               var requestURL = "https://spreadsheets.google.com/feeds/list/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json";
