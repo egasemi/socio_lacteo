@@ -7,7 +7,7 @@ $(document).ready(function() {
       datos.push($("#celu").val());
       datos.push($("#enteras").val());
       datos.push($("#descremadas").val());
-      console.log(datos)
+      //console.log(datos)
       if (datos[2] + datos[3] > 1 && datos[1].length > 10) {
         cadena = datos.join("|")
         $("#pedido").show();
@@ -17,7 +17,7 @@ $(document).ready(function() {
     })
     $("#celu").change(function limpiezaCelu(){
       var celsucio = $("#celu").val();
-      if (celsucio[0] === "+") {
+      if (celsucio[0] === "+"|| celsucio[0] === 5) {
         var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
         //console.log(cellimpio)
         $("#celu").val(cellimpio)
@@ -57,8 +57,8 @@ $(document).ready(function() {
       var desc = parseInt($("#descremadas").val());
       var ent = parseInt($("#enteras").val());
       var total = (desc + ent)*40;
-      var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*\nNro Pedido: *" + nro_pedido + "*";
-      var mje = $("#mensaje").val() + pedido;
+      var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*";
+      var mje ="Nro Pedido: *" + nro_pedido + "*\n" + $("#mensaje").val() + pedido;
       window.open("http://wa.me/" + celu + "?text=" + encodeURI(mje));
       $("#celu").val('');
       $("#enteras").val(0);
