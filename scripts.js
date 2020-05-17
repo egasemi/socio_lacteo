@@ -1,4 +1,8 @@
-const url = "https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQTOSCRDGWraUUDrk52POJVIaom4J4Yg/viewform?usp=pp_url&entry.1436956763="
+const urls = {"D3":"https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQTOSCRDGWraUUDrk52POJVIaom4J4Yg/viewform?usp=pp_url&entry.1436956763=",
+              "D5":"https://docs.google.com/forms/d/e/1FAIpQLSdEVa08UTV7maT5vYMMJsNzFe9N2AICHOUzL4zOX9l0aCGT0w/viewform?usp=pp_url&entry.1964618817="};
+
+const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json",
+                    "D5":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/2/public/values?alt=json"};
 $(document).ready(function() { 
     $("#celu,#enteras,#descremadas").change(function validacion() {
       datos = [];
@@ -27,7 +31,7 @@ $(document).ready(function() {
     }})
     
     $("#pedido").click(function modalRegistroPedido() {
-      var requestURL = "https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json";
+      var requestURL = requestURLS[datos[0]];
       var request = new XMLHttpRequest();
       request.open('GET', requestURL);
       request.responseType = 'json';
@@ -41,7 +45,7 @@ $(document).ready(function() {
         var titulo = "Registrar Pedido N°" + nro_pedido
         var boton = "Enviar Confirmación Pedido N°" + nro_pedido
         $("#myModalLabel").text(titulo)
-        $('iframe').attr('src',url + cadena);
+        $('iframe').attr('src',urls[datos[0]] + cadena);
         $("#conf").show()
         $("#conf").text(boton)
       }
