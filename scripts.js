@@ -1,5 +1,5 @@
 const url = "https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQTOSCRDGWraUUDrk52POJVIaom4J4Yg/viewform?usp=pp_url&entry.1436956763="
-$(document).ready(function() {            
+$(document).ready(function() { 
     $("#celu,#enteras,#descremadas").change(function validacion() {
       datos = [];
       
@@ -27,30 +27,24 @@ $(document).ready(function() {
     }})
     
     $("#pedido").click(function modalRegistroPedido() {
-      $('iframe').attr('src',url + cadena);
-    })
-
-    $("#bnro_pedido").click(function obtenerNroPedido(){
-      $("#bnro_pedido").hide();
-      $("#spinner").show();
-      setTimeout(function(){
-        var requestURL = "https://spreadsheets.google.com/feeds/list/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json";
-        var request = new XMLHttpRequest();
-        request.open('GET', requestURL);
-        request.responseType = 'json';
-        request.send();
-
-        request.onload = function() {
-          var lista = request.response.feed.entry;
-          nro_pedido = lista[lista.length - 1].gsx$nrodepedido.$t;
-          var boton = "Confirmar Pedido N°" + nro_pedido
-          $("#spinner").hide();
-          $("#conf").text(boton);
-          $("#conf").show();
-        }
-      },3000)
-
-      //console.log(nro_pedido)
+      var requestURL = "https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json";
+      var request = new XMLHttpRequest();
+      request.open('GET', requestURL);
+      request.responseType = 'json';
+      request.send();
+    
+      request.onload = function() {
+        console.log(request.response.feed.entry.gs$cell)
+        var lista = request.response.feed.entry;
+        nro_pedido = parseInt(lista[0].gs$cell.$t)+1;
+        console.log(parseInt(nro_pedido))
+        var titulo = "Registrar Pedido N°" + nro_pedido
+        var boton = "Enviar Confirmación Pedido N°" + nro_pedido
+        $("#myModalLabel").text(titulo)
+        $('iframe').attr('src',url + cadena);
+        $("#conf").show()
+        $("#conf").text(boton)
+      }
     })
     $("#conf").click(function respuestaConfirmacion() {
       var celu = $("#celu").val();
@@ -66,9 +60,8 @@ $(document).ready(function() {
 
       $('#myModal').on('hidden.bs.modal', function (e) {
         $("#celu").focus();
-        $("#conf").hide();
-        $("#bnro_pedido").show();
         $("#pedido").hide();
       })
     })
+  
 })
