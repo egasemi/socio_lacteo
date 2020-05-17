@@ -5,13 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   </head>
 </head>
-<body>
+<body style="font-family: Ubuntu;">
     <div class="container mt-3">
+    <h2>Registro Pedidos D3</h2>
     <form>
         <div class="form-row">
           <div class="form-group col-md-6">
@@ -70,78 +72,5 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-    <script>
-        const url = "https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQTOSCRDGWraUUDrk52POJVIaom4J4Yg/viewform?usp=pp_url&entry.1436956763="
-        $(document).ready(function() {            
-            $("#celu,#enteras,#descremadas").change(function validacion() {
-              datos = [];
-              
-              datos.push($("#distrito").val());
-              datos.push($("#celu").val());
-              datos.push($("#enteras").val());
-              datos.push($("#descremadas").val());
-              console.log(datos)
-              if (datos[2] + datos[3] > 1 && datos[1].length > 10) {
-                cadena = datos.join("|")
-                $("#pedido").show();
-              } else {
-                $("#pedido").hide();
-              }
-            })
-            $("#celu").change(function limpiezaCelu(){
-              var celsucio = $("#celu").val();
-              if (celsucio[0] === "+") {
-                var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
-                //console.log(cellimpio)
-                $("#celu").val(cellimpio)
-              } else {
-                var cellimpio = 549 + celsucio.replace('+','').replace(/ /g,'').replace('-','')
-                $("#celu").val(cellimpio)
-            }})
-            
-            $("#pedido").click(function modalRegistroPedido() {
-              $('iframe').attr('src',url + cadena);
-            })
-
-            $("#bnro_pedido").click(function obtenerNroPedido(){
-              var requestURL = "https://spreadsheets.google.com/feeds/list/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json";
-              var request = new XMLHttpRequest();
-              request.open('GET', requestURL);
-              request.responseType = 'json';
-              request.send();
-
-              request.onload = function() {
-                var lista = request.response.feed.entry;
-                nro_pedido = lista[lista.length - 1].gsx$nrodepedido.$t;
-              }
-              $("#bnro_pedido").hide();
-              $("#spinner").show();
-              setTimeout(function(){
-                $("#spinner").hide();
-                $("#conf").show();
-              },3000)
-
-              //console.log(nro_pedido)
-            })
-            $("#conf").click(function respuestaConfirmacion() {
-              var celu = $("#celu").val();
-              var desc = parseInt($("#descremadas").val());
-              var ent = parseInt($("#enteras").val());
-              var total = (desc + ent)*40;
-              var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*\nNro Pedido: *" + nro_pedido + "*";
-              var mje = $("#mensaje").val() + pedido;
-              window.open("http://wa.me/" + celu + "?text=" + encodeURI(mje));
-              $("#celu").val('');
-              $("#enteras").val('');
-              $("#descremadas").val('');
-
-              $('#myModal').on('hidden.bs.modal', function (e) {
-                $("#celu").focus();
-                $("#conf").hide();
-                $("#bnro_pedido").show();
-                $("#pedido").hide();
-              })
-            })
-        })
-    </script>
+<script src="scripts.js"></script>
 </html>
