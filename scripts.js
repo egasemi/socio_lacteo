@@ -67,5 +67,14 @@ $(document).ready(function() {
         $("#pedido").hide();
       })
     })
+    $("#x").click(function cancelarPedido() {
+      $("#celu").val('');
+      $("#enteras").val(0);
+      $("#descremadas").val(0);
+      $('#myModal').on('hidden.bs.modal', function (e) {
+        $("#celu").focus();
+        $("#pedido").hide();
+      })
+    })
   
 })
