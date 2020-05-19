@@ -56,9 +56,9 @@ $(document).ready(function() {
       var ent = parseInt($("#enteras").val());
       var total = (desc + ent)*40;
       if (desc === 0 || desc === null) {
-        var pedido = "\n\nCantidad: *"+ ent + "*\nTotal: *$" + total 
+        var pedido = "\n\nCantidad: *"+ ent + "*\nTotal: *$" + total + "*"
       } else if (ent === 0 || ent === null){
-        var pedido = "\n\nCantidad: *"+ desc + "*\nTotal: *$" + total
+        var pedido = "\n\nCantidad: *"+ desc + "*\nTotal: *$" + total + "*"
       } else {
         var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*"; 
       }
