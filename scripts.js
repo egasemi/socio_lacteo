@@ -12,7 +12,7 @@ $(document).ready(function() {
       datos.push($("#enteras").val());
       datos.push($("#descremadas").val());
       //console.log(datos)
-      if (datos[2] + datos[3] > 1 && datos[1].length > 10) {
+      if (parseInt(datos[2]) + parseInt(datos[3]) > 0 && datos[1].length > 10) {
         cadena = datos.join("|")
         $("#pedido").show();
       } else {
