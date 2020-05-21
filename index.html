@@ -35,19 +35,18 @@
         <div class="form-row">
         <div class="form-group col-md-6">
           <label for="enteras">Cantidad Entera</label>
-          <input type="number" class="form-control" id="enteras" autocomplete="off" value=0>
+          <input type="number" class="form-control" id="enteras" autocomplete="off">
         </div>
         <div class="form-group col-md-6">
             <label for="descremadas">Cantidad Descremada</label>
-            <input type="number" class="form-control" id="descremadas" autocomplete="off" value=0>
+            <input type="number" class="form-control" id="descremadas" autocomplete="off">
         </div>
+        <button class="btn btn-primary mb-3" id="pedido" data-toggle="modal" data-target="#myModal" style="display: none;">Registrar Pedido</button>
         <div class="form-group col-md-12">
           <label for="mensaje">Mensaje</label>
           <textarea class="form-control" id="mensaje" rows="3"></textarea>
         </div>
       </form>
-      </div>
-        <button class="btn btn-primary btn-block" id="pedido" data-toggle="modal" data-target="#myModal" style="display: none;">Registrar Pedido</button>
       </div>
 </body>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
