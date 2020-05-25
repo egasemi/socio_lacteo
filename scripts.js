@@ -16,7 +16,7 @@ $(document).ready(function() {
       }
       datos.push($("#enteras").val());
       datos.push($("#descremadas").val());
-      console.log(parseInt(datos[2]) + parseInt(datos[3]))
+      //console.log(parseInt(datos[2]) + parseInt(datos[3]))
       if (parseInt(datos[2]) + parseInt(datos[3]) > 0 && datos[1].length > 10) {
         cadena = datos.join("|")
         $("#pedido").show();
@@ -54,6 +54,7 @@ $(document).ready(function() {
         $("#conf").show()
         $("#conf").text(boton)
       }
+      console.log(this)
     })
     $("#conf").click(function respuestaConfirmacion() {
       var celu = $("#celu").val();
