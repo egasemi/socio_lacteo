@@ -4,15 +4,19 @@ const urls = {"D3":"https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQ
 const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json",
                     "D5":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/2/public/values?alt=json"};
 $(document).ready(function() { 
-    $("#celu,#enteras,#descremadas").change(function validacion() {
+    $("#celu,#enteras,#descremadas").keyup(function validacion() {
       datos = [];
-      console.log(this.value)
-      
       datos.push($("#distrito").val());
       datos.push($("#celu").val());
+      if ($("#enteras").val() === '') {
+        datos.push(0)
+      }
+      if ($("#descremadas").val() === '') {
+        datos.push(0)
+      }
       datos.push($("#enteras").val());
       datos.push($("#descremadas").val());
-      //console.log(datos)
+      //console.log(parseInt(datos[2]) + parseInt(datos[3]))
       if (parseInt(datos[2]) + parseInt(datos[3]) > 0 && datos[1].length > 10) {
         cadena = datos.join("|")
         $("#pedido").show();
@@ -50,6 +54,7 @@ $(document).ready(function() {
         $("#conf").show()
         $("#conf").text(boton)
       }
+      console.log(this)
     })
     $("#conf").click(function respuestaConfirmacion() {
       var celu = $("#celu").val();
@@ -77,8 +82,8 @@ $(document).ready(function() {
     })
     $("#x").click(function cancelarPedido() {
       $("#celu").val('');
-      $("#enteras").val(0);
-      $("#descremadas").val(0);
+      $("#enteras").val('');
+      $("#descremadas").val('');
       $('#myModal').on('hidden.bs.modal', function (e) {
         $("#celu").focus();
         $("#pedido").hide();
