@@ -6,6 +6,7 @@ const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_z
 $(document).ready(function() { 
     $("#celu,#enteras,#descremadas").change(function validacion() {
       datos = [];
+      console.log(this.value)
       
       datos.push($("#distrito").val());
       datos.push($("#celu").val());
@@ -55,9 +56,9 @@ $(document).ready(function() {
       var desc = parseInt($("#descremadas").val());
       var ent = parseInt($("#enteras").val());
       var total = (desc + ent)*40;
-      if (desc === 0 || desc === null) {
+      if (desc === 0 || desc === null || isNaN(desc)) {
         var pedido = "\n\nCantidad: *"+ ent + "*\nTotal: *$" + total + "*"
-      } else if (ent === 0 || ent === null){
+      } else if (ent === 0 || ent === null || isNaN(ent)){
         var pedido = "\n\nCantidad: *"+ desc + "*\nTotal: *$" + total + "*"
       } else {
         var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*"; 
