@@ -4,32 +4,42 @@ const urls = {"D3":"https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQ
 
 const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json",
                     "D4":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/7/public/values?alt=json"};
+
+var distrito = $("#distrito");
+var celu = $("#celu");
+
 function validacion(){
   ent = $("#enteras").val();
   desc = $("#descremadas").val();
-  if (ent === '') {
+  if (ent === '' && desc === '') {
     ent = 0;
+    desc = 0;
   } else if (desc === ''){
     desc = 0;
+  } else if (ent === ''){
+    ent = 0;
   }
 }
 
 function limpiezaCelu(){
-    var celsucio = $("#celu").val();
+    var celsucio = celu.val();
     if (celsucio[0] === "+"|| celsucio[0] === 5) {
       var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
-      $("#celu").val(cellimpio)
+      celu.val(cellimpio);
+      celu.toggleClass("is-invalid");
     } else {
       var cellimpio = 549 + celsucio.replace('+','').replace(/ /g,'').replace('-','')
-      $("#celu").val(cellimpio)
+      celu.val(cellimpio);
+      celu.toggleClass("is-invalid");
     }
 }
 function modalRegistroPedido() {
-  distrito = $("#distrito");
   if (distrito.val() === null) {
     distrito.toggleClass("is-invalid");
-    console.log("error");
+  } else if (celu.val() === '') {
+    celu.toggleClass("is-invalid");
   } else {
+    celu.removeClass("is-invalid")
     validacion();
     var datos = [];
     datos.push($("#distrito").val());
@@ -58,7 +68,6 @@ function modalRegistroPedido() {
 }
 function respuestaConfirmacion() {
   validacion();
-  var celu = $("#celu").val();
   if (desc === 0) {
     var total = ent*40;
     var pedido = "\n\nEnteras: *"+ ent + "*\nTotal: *$" + total + "*"
@@ -70,8 +79,9 @@ function respuestaConfirmacion() {
     var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*"; 
   }
   var mje ="Nro Pedido: *" + nro_pedido + "*\n" + $("#mensaje").val() + pedido;
-  window.open("http://wa.me/" + celu + "?text=" + encodeURI(mje));
-  $("#celu").val('');
+  window.open("http://wa.me/" + celu.val() + "?text=" + encodeURI(mje));
+  celu.val('');
+  celu.removeClass("is-invalid");
   $("#enteras").val('');
   $("#descremadas").val('');
 
@@ -91,7 +101,7 @@ function mensaje() {
   if (distrito.val() === "D3") {
     distrito.removeClass("is-invalid");
     $("#mensaje").val("\nListo, ya están reservadas tus leches. No te olvides de traer tu nro de pedido para que podamos registrar que lo retiraste. La entrega es el Jueves de 10 a 15 en Viamonte 4139 (entre Avellaneda y Godoy).")
-  } else if (distrito === "D4"){
+  } else if (distrito.val() === "D4"){
     distrito.removeClass("is-invalid");
     $("#mensaje").val("\nListo, ya están reservadas tus leches. No te olvides de traer tu nro de pedido para que podamos registrar que lo retiraste. La entrega es el Jueves de 10 a 15 en Eva Perón 6678 (casi Prov. Unidas).")
   }
