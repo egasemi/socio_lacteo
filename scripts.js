@@ -26,11 +26,11 @@ function limpiezaCelu(){
     if (celsucio[0] === "+"|| celsucio[0] === 5) {
       var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
       celu.val(cellimpio);
-      celu.toggleClass("is-invalid");
+      celu.removeClass("is-invalid");
     } else {
       var cellimpio = 549 + celsucio.replace('+','').replace(/ /g,'').replace('-','')
       celu.val(cellimpio);
-      celu.toggleClass("is-invalid");
+      celu.removeClass("is-invalid");
     }
 }
 function modalRegistroPedido() {
