@@ -13,18 +13,17 @@
 </head>
 <body style="font-family: Open Sans;">
     <div class="container mt-3">
-    <h2>Registro Pedidos Socio Lácteo</h2>
-    <button class="btn btn-primary mb-3" id="pedido" data-toggle="modal" data-target="#myModal" style="display: none;">Registrar Pedido</button>
-    <form>
+      <h3>Registro Pedidos Socio Lácteo</h3>
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="distrito">Distrito</label>
             <select id="distrito" class="form-control">
+              <option selected disabled>Elegí un distrito</option>
               <!--option id="D1">D1</option>
               <option id="D2">D2</option-->
               <option id="D3">D3</option>
-              <!--option id="D4">D4</option-->
-              <option id="D5">D5</option>
+              <option id="D4">D4</option>
+              <!--option id="D5">D5</option-->
               <!--option id="D6">D6</option-->
             </select>
           </div>
@@ -42,11 +41,11 @@
             <label for="descremadas">Cantidad Descremada</label>
             <input type="number" class="form-control" id="descremadas" autocomplete="off">
         </div>
+        <button class="btn btn-primary mb-3 btn-block" id="pedido" data-toggle="modal">Registrar Pedido</button>
         <div class="form-group col-md-12">
           <label for="mensaje">Mensaje</label>
           <textarea class="form-control" id="mensaje" rows="3"></textarea>
         </div>
-      </form>
       </div>
 </body>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -56,7 +55,7 @@
           <h4 class="modal-title" id="myModalLabel">Registrar Pedido</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="x">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="background-color: #f6f6f6;">
           <iframe src="" width="100%" height="500" frameborder="0" allowtransparency="true" id="iframe"></iframe>
       </div>
       <div class="modal-footer">
