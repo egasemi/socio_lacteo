@@ -87,8 +87,7 @@ function reiniciar() {
   $('#myModal').on('hidden.bs.modal', function (e) {
     $("#celu").focus();
   })
-  $("#conf").text('Cargando');
-  $("#conf").attr('disabled');
+  $("#conf").show();
   $("#spinner").show();
   $("#iframe").show();
   $("#iframe").attr('');
@@ -114,8 +113,9 @@ async function chequeo() {
   }
   $("#iframe").hide();
   $("#mBody").hide();
-  $("#conf").text('Enviar Confirmación pedido Nro ' + ultimo_pedido);
-  $("#conf").removeAttr('disabled');
+  $("#conf")
+  .text('Enviar Confirmación pedido Nro ' + ultimo_pedido)
+  .show()
   $("#spiner").hide();
 };
 
