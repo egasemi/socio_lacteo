@@ -52,7 +52,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Registrar Pedido</h4>
+          <h4 class="modal-title" id="myModalLabel">
+            Registrar Pedido
+            <span class="spinner-grow spinner-grow-sm" id="spinner" aria-hidden="true"></span>
+          </h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="x">&times;</button>
       </div>
       <div class="modal-body" style="background-color: #f6f6f6;" id="mBody">
@@ -63,10 +66,7 @@
           <span class="sr-only">Loading...</span>
         </div>
         <button class="btn btn-warning" id="bnro_pedido">Obtener Nro de Pedido</button>-->
-        <button class="btn btn-success btn-block" data-dismiss="modal" id="conf" style="display: none;">
-          <span class="spinner-grow spinner-grow-sm" id="spinner" aria-hidden="true"></span>
-          Cargando
-        </button>
+        <button class="btn btn-success btn-block" data-dismiss="modal" id="conf" style="display: none;">Cargando</button>
       </div>
     </div>
     <!-- /.modal-content -->
