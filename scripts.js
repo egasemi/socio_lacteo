@@ -113,9 +113,8 @@ async function chequeo() {
   }
   $("#iframe").hide();
   $("#mBody").hide();
-  $("#conf")
-  .text('Enviar Confirmación pedido Nro ' + ultimo_pedido)
-  .show()
+  $("#conf").text('Enviar Confirmación pedido Nro ' + ultimo_pedido)
+  $("#conf").show();
   $("#spiner").hide();
 };
 
