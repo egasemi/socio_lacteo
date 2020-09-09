@@ -8,6 +8,16 @@ const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_z
 var distrito = $("#distrito");
 var celu = $("#celu");
 
+async function ultimoPedido() {
+  return json = $.getJSON(requestURLS[distrito.val()], function() {
+    ultimo_pedido = parseInt(json.responseJSON.feed.entry[0].content.$t);
+  });
+}
+function nuevoPedido() {
+  ultimoPedido();
+  nuevo_pedido = ultimo_pedido + 1;
+  return nuevo_pedido;
+}
 function validacion(){
   ent = $("#enteras").val();
   desc = $("#descremadas").val();
@@ -22,16 +32,16 @@ function validacion(){
 }
 
 function limpiezaCelu(){
-    var celsucio = celu.val();
-    if (celsucio[0] === "+"|| celsucio[0] === 5) {
-      var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
-      celu.val(cellimpio);
-      celu.removeClass("is-invalid");
-    } else {
-      var cellimpio = 549 + celsucio.replace('+','').replace(/ /g,'').replace('-','')
-      celu.val(cellimpio);
-      celu.removeClass("is-invalid");
-    }
+  var celsucio = celu.val();
+  if (celsucio[0] === "+"|| celsucio[0] === 5) {
+    var cellimpio = celsucio.replace('+','').replace(/ /g,'').replace('-','')
+    celu.val(cellimpio);
+    celu.removeClass("is-invalid");
+  } else {
+    var cellimpio = 549 + celsucio.replace('+','').replace(/ /g,'').replace('-','')
+    celu.val(cellimpio);
+    celu.removeClass("is-invalid");
+  }
 }
 function modalRegistroPedido() {
   if (distrito.val() === null) {
@@ -39,6 +49,7 @@ function modalRegistroPedido() {
   } else if (celu.val() === '') {
     celu.toggleClass("is-invalid");
   } else {
+    nuevoPedido();
     celu.removeClass("is-invalid")
     validacion();
     var datos = [];
@@ -47,23 +58,8 @@ function modalRegistroPedido() {
     datos.push(parseInt(ent));
     datos.push(parseInt(desc));
     var cadena = datos.join("|")
-    var requestURL = requestURLS[datos[0]];
-    var request = new XMLHttpRequest();
-    request.open('GET', requestURL);
-    request.responseType = 'json';
-    request.send();
-
-    request.onload = function() {
-      var lista = request.response.feed.entry;
-      nro_pedido = parseInt(lista[0].gs$cell.$t)+1;
-      var titulo = "Registrar Pedido N°" + nro_pedido
-      var boton = "Enviar Confirmación Pedido N°" + nro_pedido
-      $("#myModal").modal();
-      $("#myModalLabel").text(titulo)
-      $('iframe').attr('src',urls[datos[0]] + cadena);
-      $("#conf").show()
-      $("#conf").text(boton)
-    }
+    $("#myModal").modal();
+    $('iframe').attr('src',urls[datos[0]] + cadena);
   }
 }
 function respuestaConfirmacion() {
@@ -78,8 +74,11 @@ function respuestaConfirmacion() {
     var total = desc*40 + ent*40
     var pedido = "\n\nEnteras: *"+ ent + "*\nDescremadas: *" + desc + "*\nTotal *$" + total + "*"; 
   }
-  var mje ="Nro Pedido: *" + nro_pedido + "*\n" + $("#mensaje").val() + pedido;
+  var mje ="Nro Pedido: *" + nuevo_pedido + "*\n" + $("#mensaje").val() + pedido;
   window.open("http://wa.me/" + celu.val() + "?text=" + encodeURI(mje));
+  reiniciar();
+}
+function reiniciar() {
   celu.val('');
   celu.removeClass("is-invalid");
   $("#enteras").val('');
@@ -88,14 +87,12 @@ function respuestaConfirmacion() {
   $('#myModal').on('hidden.bs.modal', function (e) {
     $("#celu").focus();
   })
-}
-function cancelarPedido() {
-  $("#celu").val('');
-  $("#enteras").val('');
-  $("#descremadas").val('');
-  $('#myModal').on('hidden.bs.modal', function (e) {
-    $("#celu").focus();
-  })
+  $("#conf").text('Cargando');
+  $("#conf").attr('disabled');
+  $("#spinner").show();
+  $("#iframe").show();
+  $("#iframe").attr('');
+  $("#mBody").show();
 }
 function mensaje() {
   if (distrito.val() === "D3") {
@@ -106,13 +103,31 @@ function mensaje() {
     $("#mensaje").val("\nListo, ya están reservadas tus leches. No te olvides de traer tu nro de pedido para que podamos registrar que lo retiraste. La entrega es el Jueves de 10 a 15 en Eva Perón 6678 (casi Prov. Unidas).")
   }
 }
+function timer(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
+async function chequeo() {
+  await ultimoPedido();
+  while (nuevo_pedido !== ultimo_pedido) {
+    await ultimoPedido();
+    await timer(1000);
+  }
+  $("#iframe").hide();
+  $("#mBody").hide();
+  $("#conf").text('Enviar Confirmación pedido Nro ' + ultimo_pedido);
+  $("#conf").removeAttr('disabled');
+  $("#spiner").hide();
+};
 
-$(document).ready(function() {    
+$(document).ready(async function() {
+
   $("#celu").change(function() {
     limpiezaCelu();
   })
-  $("#distrito").change(function () {
+  $("#distrito").change(async function () {
     mensaje();
+    await ultimoPedido();
+    await nuevoPedido();
   })  
   $("#pedido").click(function() {
     modalRegistroPedido();
@@ -121,6 +136,9 @@ $(document).ready(function() {
     respuestaConfirmacion();
   })
   $("#x").click(function () {
-    cancelarPedido();
-  }) 
+    reiniciar();
+  })
+  $("#iframe").on('load', async function () {
+    await chequeo();
+  })
 })
