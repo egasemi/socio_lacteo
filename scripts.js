@@ -87,7 +87,7 @@ function reiniciar() {
   $('#myModal').on('hidden.bs.modal', function (e) {
     $("#celu").focus();
   })
-  $("#conf").show();
+  $("#conf").hide();
   $("#spinner").show();
   $("#iframe").show();
   $("#iframe").attr('');
