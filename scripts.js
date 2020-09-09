@@ -13,8 +13,8 @@ async function ultimoPedido() {
     ultimo_pedido = parseInt(json.responseJSON.feed.entry[0].content.$t);
   });
 }
-function nuevoPedido() {
-  ultimoPedido();
+async function nuevoPedido() {
+  await ultimoPedido();
   nuevo_pedido = ultimo_pedido + 1;
   return nuevo_pedido;
 }
@@ -129,16 +129,15 @@ $(document).ready(async function() {
     await ultimoPedido();
     await nuevoPedido();
   })  
-  $("#pedido").click(function() {
+  $("#pedido").click(async function() {
     modalRegistroPedido();
+    await chequeo();
   })
   $("#conf").click(function(){
     respuestaConfirmacion();
+    reiniciar();
   })
   $("#x").click(function () {
     reiniciar();
-  })
-  $("#iframe").on('load', async function () {
-    await chequeo();
   })
 })
