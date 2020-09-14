@@ -1,9 +1,9 @@
 
-const urls = {"D3":"https://docs.google.com/forms/d/e/1FAIpQLScMAcjLI2OJkVzkWZNQTOSCRDGWraUUDrk52POJVIaom4J4Yg/viewform?usp=pp_url&entry.1436956763=",
-              "D4":"https://docs.google.com/forms/d/e/1FAIpQLSdBK6YLm6ueGb0fG5vvLNp17jEU1DzfYuJt21NqdopcvYM25A/viewform?usp=pp_url&entry.1436956763="};
+const urls = {"D3":"https://docs.google.com/forms/d/e/1FAIpQLSeBLE1Ul_icWsawTlQ8R0vwZbzQEnlsIzKZgUk34_iXPO49pw/viewform?usp=pp_url&entry.1436956763=",
+              "D4":"https://docs.google.com/forms/d/e/1FAIpQLSdWYs2iS0AnUQCMULhg6QqeodJEWMahXhZ9dTuY6wqTe4hluA/viewform?usp=pp_url&entry.1436956763="};
 
-const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/1/public/values?alt=json",
-                    "D4":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/7/public/values?alt=json"};
+const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/8/public/values?alt=json",
+                    "D4":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/9/public/values?alt=json"};
 
 var distrito = $("#distrito");
 var celu = $("#celu");
@@ -115,7 +115,7 @@ async function chequeo() {
   $("#mBody").hide();
   $("#conf").text('Enviar Confirmación pedido Nro ' + ultimo_pedido)
   $("#conf").show();
-  $("#spiner").hide();
+  $("#spinner").hide();
 };
 
 $(document).ready(async function() {
