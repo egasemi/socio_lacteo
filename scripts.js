@@ -2,8 +2,8 @@
 const urls = {"D3":"https://docs.google.com/forms/d/e/1FAIpQLSeBLE1Ul_icWsawTlQ8R0vwZbzQEnlsIzKZgUk34_iXPO49pw/viewform?usp=pp_url&entry.1436956763=",
               "D4":"https://docs.google.com/forms/d/e/1FAIpQLSdWYs2iS0AnUQCMULhg6QqeodJEWMahXhZ9dTuY6wqTe4hluA/viewform?usp=pp_url&entry.1436956763="};
 
-const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/8/public/values?alt=json",
-                    "D4":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/9/public/values?alt=json"};
+const requestURLS = {"D3":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/o5l1nfz/public/values?alt=json",
+                    "D4":"https://spreadsheets.google.com/feeds/cells/1qDfmW1_zmA9zVq-dk8XV3YwREsJCUxFEcLAz37LwTPE/oqlw2f4/public/values?alt=json"};
 
 var distrito = $("#distrito");
 var celu = $("#celu");
@@ -43,13 +43,13 @@ function limpiezaCelu(){
     celu.removeClass("is-invalid");
   }
 }
-function modalRegistroPedido() {
+async function modalRegistroPedido() {
   if (distrito.val() === null) {
     distrito.toggleClass("is-invalid");
   } else if (celu.val() === '') {
     celu.toggleClass("is-invalid");
   } else {
-    nuevoPedido();
+    await nuevoPedido();
     celu.removeClass("is-invalid")
     validacion();
     var datos = [];
@@ -81,42 +81,57 @@ function respuestaConfirmacion() {
 function reiniciar() {
   celu.val('');
   celu.removeClass("is-invalid");
-  $("#enteras").val('');
-  $("#descremadas").val('');
+  $("#enteras,#descremadas").val('');
 
   $('#myModal').on('hidden.bs.modal', function (e) {
     $("#celu").focus();
   })
   $("#conf").hide();
-  $("#spinner").show();
-  $("#iframe").show();
-  $("#iframe").attr('');
-  $("#mBody").show();
+  $("#spinner,#iframe,#mBody").show();
+  $("#iframe").attr('src','');
 }
 function mensaje() {
   if (distrito.val() === "D3") {
     distrito.removeClass("is-invalid");
-    $("#mensaje").val("\nListo, ya están reservadas tus leches. No te olvides de traer tu nro de pedido para que podamos registrar que lo retiraste. La entrega es el Jueves de 10 a 15 en Viamonte 4139 (entre Avellaneda y Godoy).")
+    $("#mensaje").val(
+      "\nListo, ya están reservadas tus leches.\
+      No te olvides de traer tu nro de pedido para que podamos registrar que lo retiraste. \
+      La entrega es el Jueves de 10 a 15 en Viamonte 4139 (entre Avellaneda y Godoy)."
+      )
   } else if (distrito.val() === "D4"){
     distrito.removeClass("is-invalid");
-    $("#mensaje").val("\nListo, ya están reservadas tus leches. No te olvides de traer tu nro de pedido para que podamos registrar que lo retiraste. La entrega es el Jueves de 10 a 15 en Eva Perón 6678 (casi Prov. Unidas).")
+    $("#mensaje").val(
+      "\nListo, ya están reservadas tus leches. \
+      No te olvides de traer tu nro de pedido para que podamos registrar que lo retiraste. \
+      La entrega es el Jueves de 10 a 15 en Eva Perón 6678 (casi Prov. Unidas)."
+      )
   }
 }
 function timer(ms) {
   return new Promise(res => setTimeout(res, ms));
 }
+
 async function chequeo() {
-  await ultimoPedido();
-  while (nuevo_pedido !== ultimo_pedido) {
+  for (index = 1 ; index < 7 ; index++){
     await ultimoPedido();
-    await timer(1000);
+    if (nuevo_pedido === ultimo_pedido) {
+      console.log('actualizado')
+      $("#iframe,#mBody,#spinner,#myModalLabel").hide();
+      $("#conf").text('Enviar Confirmación pedido Nro ' + ultimo_pedido)
+      $("#conf").show();
+      break;
+    } else {
+      await ultimoPedido();
+      await timer(1000);
+      console.log("intento nro " + index)
+    }
   }
-  $("#iframe").hide();
-  $("#mBody").hide();
-  $("#conf").text('Enviar Confirmación pedido Nro ' + ultimo_pedido)
-  $("#conf").show();
-  $("#spinner").hide();
-};
+  if (index === 7) {
+    $("#recargar").show();
+    $("#myModalLabel,#mBody").hide()
+  }
+
+}
 
 $(document).ready(async function() {
 
@@ -129,14 +144,17 @@ $(document).ready(async function() {
     await nuevoPedido();
   })  
   $("#pedido").click(async function() {
-    modalRegistroPedido();
+    await modalRegistroPedido();
     await chequeo();
   })
   $("#conf").click(function(){
     respuestaConfirmacion();
-    reiniciar();
   })
   $("#x").click(function () {
     reiniciar();
+  })
+  $("#refresh").click(function(){
+    $("#iframe").attr('src','')
+    window.location.reload()
   })
 })
